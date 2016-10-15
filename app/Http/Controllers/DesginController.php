@@ -14,7 +14,7 @@ use DB;
 class DesginController extends Controller{
     
     public function apiCategary(){
-        return DB::select("select * from categary");
+        return DB::select("select * from category");
     }
     
     public function apiSub(){
