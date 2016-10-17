@@ -13,6 +13,14 @@ use DB;
   
 class DesginController extends Controller{
     
+    
+    
+    public function apiProduct01(){
+        return DB::select("SELECT categary.id AS categaryId , categary.name AS categaryName ,sub.id AS subId , sub.name AS subName , product.id AS productId , product.name As productName , product.dis AS productDis , product.img AS productImg , product.GetHome AS productGethome , product.prince AS productPrice
+
+FROM product ,categary ,sub ,producted WHERE categary.id = producted.cate and sub.id = producted.sub AND product.id = producted.product");
+    }
+    
     public function apiCategary(){
         return DB::select("select * from category");
     }

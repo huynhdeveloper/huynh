@@ -3,7 +3,7 @@ use App\Models\Score;
 use Illuminate\Http\Request;
 
 
-function authenticate($user, $password) {
+/*function authenticate($user, $password) {
      $_user_ = USERNAME;
      $_password_ = PASSWORD;
 
@@ -40,7 +40,7 @@ if (!isset($_SERVER['PHP_AUTH_USER'])) {
         die;
     }
 }
-
+*/
 
 // function to parse the http auth header
 
@@ -253,6 +253,10 @@ $app->post('/API/v1/Location','ApiController@location');
 
 $app->get('/API/v1/getCategory','DesginController@apiCategary');
 
+
+//update 17/10/2012
+
+$app->get('/API/v1/getProduct','DesginController@apiProduct01');
 
 
 
