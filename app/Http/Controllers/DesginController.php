@@ -7,13 +7,14 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Json;
 use App\Models\Account;
+use App\Models\Like;
 
 use DB;
   
   
 class DesginController extends Controller{
     
-    
+    static public $para = "";
     
     public function apiProduct01(){
         return DB::select("SELECT categary.id AS categaryId , categary.name AS categaryName ,sub.id AS subId , sub.name AS subName , product.id AS productId , product.name As productName , product.dis AS productDis , product.img AS productImg , product.GetHome AS productGethome , product.prince AS productPrice
@@ -94,9 +95,53 @@ FROM product ,categary ,sub ,producted WHERE categary.id = producted.cate and su
     
     
     
+    public function queryAbstract(){
+        date_default_timezone_set('Asia/Ho_Chi_Minh');		
+        $data =DB::table("product")->leftJoin ("time","product.id","=","time.product")
+							   ->where(function($query){
+								   $query->where("time.startofdate","<=",date("Y-m-d"))
+										 ->orWhereNull("time.startofdate","IS Null");
+							   })
+							   ->where(function($query){
+								   $query->where("time.endofdate",">",date("Y-m-d"))
+										 ->orWhereNull("time.endofdate","IS Null");
+							   })
+								->where(function($query){
+								   $todayh = getdate();	
+								   $stringtime=$todayh['hours'].":".$todayh['minutes'].":".$todayh['seconds'];								 
+								   $query->where("time.startofhour","<=",$stringtime)
+										 ->orWhereNull("time.startofhour","IS Null");
+							   })
+								->where(function($query){
+								   $todayh = getdate();
+								   $stringtime=$todayh['hours'].":".$todayh['minutes'].":".$todayh['seconds'];	
+								   $query->where("time.endofhour",">",$stringtime)
+										 ->orWhereNull("time.endofhour","IS Null");
+							   })
+								->where(function($query){
+								   $todayh = getdate();
+								   $query->where("time.dayofweekstart","<=",$todayh['wday'])
+										 ->orWhereNull("time.dayofweekstart","IS Null");
+							   })
+								->where(function($query){
+								   $todayh = getdate();
+								   $query->where("time.dayofweekEnd",">",$todayh['wday'])
+										 ->orWhereNull("time.dayofweekEnd","IS Null");
+							   });
+            return $data;
+    }
     
     
-    
+    public function testProduct($name){
+            $data = DesginController::queryAbstract();
+            DesginController::$para =$name;
+            $data = $data->where(
+                function($query){
+                    $query->where("product.name",'like','%'.DesginController::$para.'%');
+                }
+            )->get();
+            return $data;
+    }
     
     
     public function showAll(){

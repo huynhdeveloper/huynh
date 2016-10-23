@@ -254,9 +254,15 @@ $app->post('/API/v1/Location','ApiController@location');
 $app->get('/API/v1/getCategory','DesginController@apiCategary');
 
 
-//update 17/10/2012
+//update 17/10/2016
 
 $app->get('/API/v1/getProduct','DesginController@apiProduct01');
+
+//update 23/10/2016
+
+$app->get('/API/v1/getHome','DesginController@Product');
+
+$app->get('/API/v1/getTest/{name}','DesginController@testProduct');
 
 
 
